@@ -5,6 +5,12 @@ const BUCKET = 'images';
 
 // Fields the page is allowed to change on each table
 const CHARACTER_FIELDS = ['name', 'nickname', 'notes', 'guesses'];
+const BATCH_FIELDS = ['label', 'note'];
+
+// Keeps only the fields the page is allowed to change
+function pick(changes, allowed) {
+  return Object.fromEntries(Object.entries(changes || {}).filter(([key]) => allowed.includes(key)));
+}
 
 async function uploadImage(charId, dataUrl) {
   const base64 = dataUrl.split(',')[1];
@@ -29,8 +35,8 @@ const ops = {
     return db.from('batches').insert({ id, label });
   },
 
-  async renameBatch({ id, label }) {
-    return db.from('batches').update({ label }).eq('id', id);
+  async updateBatch({ id, changes }) {
+    return db.from('batches').update(pick(changes, BATCH_FIELDS)).eq('id', id);
   },
 
   async deleteBatch({ id }) {
@@ -46,9 +52,7 @@ const ops = {
   },
 
   async updateCharacter({ id, changes }) {
-    const allowed = Object.fromEntries(
-      Object.entries(changes).filter(([key]) => CHARACTER_FIELDS.includes(key)));
-    return db.from('characters').update(allowed).eq('id', id);
+    return db.from('characters').update(pick(changes, CHARACTER_FIELDS)).eq('id', id);
   },
 
   async replaceImage({ id, image }) {

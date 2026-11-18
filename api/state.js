@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
   const [settings, batches, characters] = await Promise.all([
     db.from('settings').select('players').eq('id', 1).single(),
-    db.from('batches').select('id, label').order('created_at', { ascending: false }),
+    db.from('batches').select('id, label, note').order('created_at', { ascending: false }),
     db.from('characters')
       .select('id, batch_id, image_url, name, nickname, notes, guesses')
       .order('created_at', { ascending: true }),

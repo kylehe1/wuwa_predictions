@@ -9,7 +9,7 @@
      activeBatchId: "b_...",
      batches: [                       // index 0 = newest
        {
-         id, label,
+         id, label, note,
          characters: [
            {
              id, image (URL), name, nickname, notes,
@@ -229,7 +229,7 @@ function renderTabs() {
       batch.label = '';  // so this tab's old name doesn't block its own number
       batch.label = input.value.trim() || nextTabLabel();
       editingTabId = null;
-      if (batch.label !== oldLabel) save('renameBatch', { id: batch.id, label: batch.label });
+      if (batch.label !== oldLabel) save('updateBatch', { id: batch.id, changes: { label: batch.label } }).catch(() => {});
       renderTabs();
     });
   }
@@ -251,6 +251,8 @@ function renderBatch() {
   const cards = batch.characters.map(renderCard).join('');
 
   batchEl.innerHTML = `
+    <input class="batch-note" value="${esc(batch.note)}" maxlength="120" placeholder="…">
+
     <div class="batch-bar">
       <span class="batch-count">${count} ${count === 1 ? 'character' : 'characters'}</span>
       <span class="rule"></span>
@@ -320,7 +322,7 @@ function renderCard(char) {
           ${renderSelect('role', 1, ROLES, g2.role)}
         </div>
 
-        <textarea class="notes" data-field="notes" placeholder="Theories…">${esc(char.notes)}</textarea>
+        <textarea class="notes" data-field="notes" placeholder="…">${esc(char.notes)}</textarea>
       </div>
     </article>`;
 }
@@ -334,7 +336,7 @@ function setActiveBatch(id) {
 }
 
 async function createBatch() {
-  const batch = { id: makeId('b'), label: nextTabLabel(), characters: [] };
+  const batch = { id: makeId('b'), label: nextTabLabel(), note: '', characters: [] };
   state.batches.unshift(batch); // newest first
   setActiveBatch(batch.id);
   render();
@@ -525,6 +527,15 @@ document.addEventListener('keydown', e => {
 
 // Typing in any card field or dropdown autosaves
 document.addEventListener('input', e => {
+  // One-line note at the top of the open tab
+  if (e.target.matches('.batch-note')) {
+    const batch = getActiveBatch();
+    batch.note = e.target.value;
+    saveLater(batch.id + 'note', () =>
+      save('updateBatch', { id: batch.id, changes: { note: batch.note } }).catch(() => {}));
+    return;
+  }
+
   const field = e.target.dataset.field;
   const charId = e.target.closest('[data-char-id]')?.dataset.charId;
   if (!field || !charId) return;
