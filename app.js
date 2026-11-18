@@ -24,7 +24,7 @@
 
 const PASSWORD_KEY = 'wuwa-predictions-password';
 const ACTIVE_TAB_KEY = 'wuwa-predictions-active-tab';
-const SYNC_INTERVAL = 15000; // ms between checks for the other player's changes
+const SYNC_INTERVAL = 3000;  // ms between checks for the other player's changes
 const TEXT_SAVE_DELAY = 600;  // ms to wait after typing stops before saving
 const MAX_IMAGE_SIZE = 800; // px, longest side
 
