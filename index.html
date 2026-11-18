@@ -30,32 +30,6 @@
   <!-- The active batch is rendered here by app.js -->
   <main id="batch"></main>
 
-  <!-- "New batch" popup: choose the image format -->
-  <div id="chooser" class="modal" hidden>
-    <div class="modal-box">
-      <h2>New batch</h2>
-      <p>Which image format are the teasers?</p>
-      <div class="layout-options">
-        <button class="layout-option" data-action="pick-layout" data-layout="vertical">
-          <span class="preview-pair">
-            <span class="preview preview-vertical"></span>
-            <span class="preview preview-vertical"></span>
-          </span>
-          <strong>Vertical</strong>
-          <small>260 : 480 · 2 per row</small>
-        </button>
-        <button class="layout-option" data-action="pick-layout" data-layout="horizontal">
-          <span class="preview-pair">
-            <span class="preview preview-horizontal"></span>
-          </span>
-          <strong>Horizontal</strong>
-          <small>560 : 230 · 1 per row</small>
-        </button>
-      </div>
-      <button class="btn btn-quiet" data-action="close-chooser">Cancel</button>
-    </div>
-  </div>
-
   <!-- Shared password popup (shown until the right password is entered) -->
   <div id="password" class="modal" hidden>
     <form class="modal-box">

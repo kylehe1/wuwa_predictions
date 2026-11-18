@@ -9,7 +9,6 @@ insert into settings default values;
 create table batches (
   id text primary key,
   label text not null,
-  layout text not null,
   created_at timestamptz not null default now()
 );
 

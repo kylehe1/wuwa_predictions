@@ -9,7 +9,7 @@
      activeBatchId: "b_...",
      batches: [                       // index 0 = newest
        {
-         id, label, layout: "vertical" | "horizontal",
+         id, label,
          characters: [
            {
              id, image (URL), name, nickname, notes,
@@ -32,11 +32,6 @@ const ELEMENTS = ['Glacio', 'Fusion', 'Electro', 'Aero', 'Spectro', 'Havoc'];
 const WEAPONS = ['Broadblade', 'Sword', 'Pistols', 'Gauntlets', 'Rectifier'];
 const ROLES = ['Main DPS', 'Sub DPS', 'Support'];
 
-const LAYOUTS = {
-  vertical: 'Vertical · 260:480',
-  horizontal: 'Horizontal · 560:230',
-};
-
 let state = { players: ['K', 'P'], activeBatchId: readLocal(ACTIVE_TAB_KEY), batches: [] };
 let editingTabId = null;   // which tab is being renamed
 let pendingUpload = null;  // { mode: 'add' } or { mode: 'replace', charId }
@@ -44,7 +39,6 @@ let pendingUpload = null;  // { mode: 'add' } or { mode: 'replace', charId }
 /* ---------- Shortcuts to page elements ---------- */
 const tabsEl = document.getElementById('tabs');
 const batchEl = document.getElementById('batch');
-const chooserEl = document.getElementById('chooser');
 const lightboxEl = document.getElementById('lightbox');
 const fileInput = document.getElementById('file-input');
 const passwordEl = document.getElementById('password');
@@ -259,12 +253,11 @@ function renderBatch() {
   batchEl.innerHTML = `
     <div class="batch-bar">
       <span class="batch-count">${count} ${count === 1 ? 'character' : 'characters'}</span>
-      <span class="badge">${LAYOUTS[batch.layout]}</span>
       <span class="rule"></span>
       <button class="btn btn-delete" data-action="delete-batch" data-confirm-text="Click again to delete">Delete batch</button>
     </div>
 
-    <div class="grid grid-${batch.layout}">
+    <div class="grid">
       ${cards}
       <div class="add-card" data-action="add-character" tabindex="0">
         <span class="add-icon"><span>+</span></span>
@@ -340,12 +333,12 @@ function setActiveBatch(id) {
   writeLocal(ACTIVE_TAB_KEY, id ?? '');
 }
 
-async function createBatch(layout) {
-  const batch = { id: makeId('b'), label: nextTabLabel(), layout, characters: [] };
+async function createBatch() {
+  const batch = { id: makeId('b'), label: nextTabLabel(), characters: [] };
   state.batches.unshift(batch); // newest first
   setActiveBatch(batch.id);
   render();
-  await save('createBatch', batch).catch(() => {});
+  await save('createBatch', { id: batch.id, label: batch.label }).catch(() => {});
 }
 
 async function deleteActiveBatch() {
@@ -470,9 +463,6 @@ fileInput.addEventListener('change', () => {
 /* =========================================================
    Popups
    ========================================================= */
-function openChooser() { chooserEl.hidden = false; }
-function closeChooser() { chooserEl.hidden = true; }
-
 function openLightbox(src) {
   lightboxEl.querySelector('img').src = src;
   lightboxEl.hidden = false;
@@ -505,14 +495,7 @@ document.addEventListener('click', e => {
       renderTabs();
       break;
     case 'new-batch':
-      openChooser();
-      break;
-    case 'pick-layout':
-      closeChooser();
-      createBatch(el.dataset.layout);
-      break;
-    case 'close-chooser':
-      closeChooser();
+      createBatch();
       break;
     case 'delete-batch':
       confirmThen(el, deleteActiveBatch);
@@ -532,12 +515,10 @@ document.addEventListener('click', e => {
   }
 });
 
-// Clicking the dark area around the popup closes it
-chooserEl.addEventListener('click', e => { if (e.target === chooserEl) closeChooser(); });
 lightboxEl.addEventListener('click', closeLightbox);
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeChooser(); closeLightbox(); }
+  if (e.key === 'Escape') closeLightbox();
   // Keyboard users: Enter on the "Add character" card
   if (e.key === 'Enter' && e.target.matches('.add-card')) openFilePicker({ mode: 'add' });
 });

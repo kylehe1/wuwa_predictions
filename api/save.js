@@ -25,8 +25,8 @@ const ops = {
     return db.from('settings').update({ players }).eq('id', 1);
   },
 
-  async createBatch({ id, label, layout }) {
-    return db.from('batches').insert({ id, label, layout });
+  async createBatch({ id, label }) {
+    return db.from('batches').insert({ id, label });
   },
 
   async renameBatch({ id, label }) {

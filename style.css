@@ -11,7 +11,7 @@
   --heading: #1e1e27;
   --muted: #696875;
   --faint: #95939e;
-  --accent: #545775;      /* nicknames, badges, + button */
+  --accent: #545775;      /* nicknames, + button, focus */
   --title: #454868;       /* site title */
   --danger: #b8283d;
 
@@ -237,25 +237,13 @@ main {
 
 .batch-count { font-size: 12px; color: var(--muted); }
 
-.badge {
-  padding: 3px 8px;
-  border: 1px solid var(--line-strong);
-  border-radius: 3px;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
 .rule {
   flex: 1;
   height: 1px;
   background: linear-gradient(90deg, rgba(84, 87, 117, 0.35), transparent);
 }
 
-.grid { display: grid; gap: 18px; }
-.grid-vertical { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.grid-horizontal { grid-template-columns: 1fr; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 
 .empty {
   margin: 80px auto;
@@ -278,15 +266,12 @@ main {
   border-radius: 4px;
 }
 
-.grid-vertical .card { flex-direction: row; }
-.grid-horizontal .card { flex-direction: column; }
-
 .card-image {
   position: relative;
+  flex: 0 0 42%;
+  aspect-ratio: 9 / 16; /* teaser images are 2160 × 3840 */
   background: var(--field);
 }
-.grid-vertical .card-image { flex: 0 0 42%; aspect-ratio: 260 / 480; }
-.grid-horizontal .card-image { aspect-ratio: 560 / 230; }
 
 .card-image img {
   display: block;
@@ -306,7 +291,6 @@ main {
   opacity: 0;
   transition: opacity 0.15s;
 }
-.grid-horizontal .card-tools { left: auto; right: 10px; top: 10px; }
 .card:hover .card-tools,
 .card-tools:focus-within,
 .card-tools:has(.confirming) { opacity: 1; }
@@ -324,14 +308,6 @@ main {
   flex-direction: column;
   gap: 14px;
   padding: 14px;
-}
-
-.grid-horizontal .card-body {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-  padding: 16px 18px 18px;
-  align-items: start;
 }
 
 .card-names { display: flex; flex-direction: column; gap: 2px; }
@@ -361,7 +337,6 @@ main {
   resize: vertical;
   outline: none;
 }
-.grid-horizontal .notes { min-height: 100%; }
 .notes:focus { border-color: var(--accent); }
 
 /* =========================================================
@@ -451,10 +426,10 @@ option[value="Havoc"]   { color: var(--havoc); }
   color: var(--muted);
   text-align: center;
   cursor: pointer;
+  flex-direction: column;
+  min-height: 300px;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
-.grid-vertical .add-card { flex-direction: column; min-height: 300px; }
-.grid-horizontal .add-card { min-height: 120px; }
 
 .add-card:hover,
 .add-card.dragging {
@@ -509,31 +484,6 @@ option[value="Havoc"]   { color: var(--havoc); }
 .modal-box p { margin: -12px 0 0; font-size: 13px; color: var(--muted); }
 .modal-box > .btn { align-self: flex-end; }
 
-.layout-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-.layout-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 20px 14px;
-  background: var(--field);
-  border: 1px solid var(--line-strong);
-  border-radius: 4px;
-  cursor: pointer;
-}
-.layout-option:hover { border-color: var(--accent); background: #fff; }
-.layout-option strong { font: 600 15px var(--sans); }
-.layout-option small { font-size: 11px; color: var(--muted); }
-
-.preview-pair { display: flex; align-items: center; gap: 6px; height: 96px; margin-bottom: 10px; }
-.preview {
-  border: 1px solid var(--accent);
-  background: repeating-linear-gradient(135deg, #e2e1e7 0 5px, #dcdbe2 5px 10px);
-}
-.preview-vertical { height: 96px; aspect-ratio: 260 / 480; }
-.preview-horizontal { width: 150px; aspect-ratio: 560 / 230; }
-
 /* Password popup */
 #password { background: var(--bg); backdrop-filter: none; }
 #password .modal-box { width: min(100%, 360px); }
@@ -583,13 +533,13 @@ option[value="Havoc"]   { color: var(--havoc); }
    Small screens
    ========================================================= */
 @media (max-width: 900px) {
-  .grid-vertical { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
   .site-header { height: auto; flex-wrap: wrap; padding: 12px 16px; gap: 10px; }
   .tabs { position: static; padding: 10px 16px 0; }
   main { padding: 20px 16px 48px; }
-  .grid-vertical .card { flex-direction: column; }
-  .grid-vertical .card-image { flex: none; }
+  .card { flex-direction: column; }
+  .card-image { flex: none; }
 }
