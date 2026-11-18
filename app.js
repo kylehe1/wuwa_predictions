@@ -13,8 +13,8 @@
          characters: [
            {
              id, image (URL), name, nickname, notes,
-             guesses: [ {element, weapon, role},   // player 1
-                        {element, weapon, role} ]  // player 2
+             guesses: [ {attribute, weapon, role},   // player 1
+                        {attribute, weapon, role} ]  // player 2
            }
          ]
        }
@@ -28,7 +28,7 @@ const SYNC_INTERVAL = 3000;  // ms between checks for the other player's changes
 const TEXT_SAVE_DELAY = 600;  // ms to wait after typing stops before saving
 const MAX_IMAGE_SIZE = 800; // px, longest side
 
-const ELEMENTS = ['Glacio', 'Fusion', 'Electro', 'Aero', 'Spectro', 'Havoc'];
+const ATTRIBUTES = ['Glacio', 'Fusion', 'Electro', 'Aero', 'Spectro', 'Havoc'];
 const WEAPONS = ['Broadblade', 'Sword', 'Pistols', 'Gauntlets', 'Rectifier'];
 const ROLES = ['Main DPS', 'Sub DPS', 'Support'];
 
@@ -276,7 +276,7 @@ function renderOptions(list, selected) {
 }
 
 function renderSelect(field, player, list, value) {
-  const extraClass = field === 'element' ? 'el-select' : '';
+  const extraClass = field === 'attribute' ? 'attr-select' : '';
   return `
     <select class="${extraClass}" data-field="${field}" data-player="${player}" data-value="${esc(value)}">
       ${renderOptions(list, value)}
@@ -307,9 +307,9 @@ function renderCard(char) {
           <span class="col-head" data-player-name="0">${esc(state.players[0])}</span>
           <span class="col-head" data-player-name="1">${esc(state.players[1])}</span>
 
-          <span class="row-label">Element</span>
-          ${renderSelect('element', 0, ELEMENTS, g1.element)}
-          ${renderSelect('element', 1, ELEMENTS, g2.element)}
+          <span class="row-label">Attribute</span>
+          ${renderSelect('attribute', 0, ATTRIBUTES, g1.attribute)}
+          ${renderSelect('attribute', 1, ATTRIBUTES, g2.attribute)}
 
           <span class="row-label">Weapon</span>
           ${renderSelect('weapon', 0, WEAPONS, g1.weapon)}
@@ -352,7 +352,7 @@ async function deleteActiveBatch() {
 async function addCharacter(image) {
   const batch = getActiveBatch();
   if (!batch) return;
-  const emptyGuess = () => ({ element: '', weapon: '', role: '' });
+  const emptyGuess = () => ({ attribute: '', weapon: '', role: '' });
   const char = {
     id: makeId('c'),
     image, // local preview until the upload finishes
@@ -364,7 +364,7 @@ async function addCharacter(image) {
   batch.characters.push(char);
   render();
   try {
-    const result = await save('createCharacter', { id: char.id, batchId: batch.id, image });
+    const result = await save('createCharacter', { id: char.id, batchId: batch.id, image, guesses: char.guesses });
     char.image = result.image;
   } catch {
     batch.characters = batch.characters.filter(c => c !== char);
@@ -534,7 +534,7 @@ document.addEventListener('input', e => {
 
   if (player !== undefined) {
     char.guesses[player][field] = e.target.value;
-    e.target.dataset.value = e.target.value; // updates element color
+    e.target.dataset.value = e.target.value; // updates attribute color
     save('updateCharacter', { id: charId, changes: { guesses: char.guesses } }).catch(() => {});
   } else {
     char[field] = e.target.value;

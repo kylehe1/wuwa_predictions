@@ -15,7 +15,7 @@
   --title: #454868;       /* site title */
   --danger: #b8283d;
 
-  /* Element colors */
+  /* Attribute colors */
   --fusion: #d6334a;
   --glacio: #3db4d8;
   --aero: #2fbf91;
@@ -59,7 +59,7 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
   border-bottom: 1px solid rgba(84, 87, 117, 0.25);
 }
 
-.brand { margin-right: auto; }
+.brand { margin-right: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
 
 .brand h1 {
   margin: 0;
@@ -68,13 +68,8 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
   color: var(--title);
 }
 
-.brand p {
-  margin: 4px 0 0;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.attribute-icons { display: flex; gap: 6px; }
+.attribute-icons img { width: 26px; height: 26px; display: block; }
 
 .players { display: flex; align-items: center; gap: 10px; }
 
@@ -390,18 +385,18 @@ main {
 
 option { color: var(--text); background: #fff; }
 
-/* Element color coding: each select sets --el, the rule below uses it */
-select[data-value="Fusion"]  { --el: var(--fusion); }
-select[data-value="Glacio"]  { --el: var(--glacio); }
-select[data-value="Aero"]    { --el: var(--aero); }
-select[data-value="Electro"] { --el: var(--electro); }
-select[data-value="Spectro"] { --el: var(--spectro); }
-select[data-value="Havoc"]   { --el: var(--havoc); }
+/* Attribute color coding: each select sets --attr, the rule below uses it */
+select[data-value="Fusion"]  { --attr: var(--fusion); }
+select[data-value="Glacio"]  { --attr: var(--glacio); }
+select[data-value="Aero"]    { --attr: var(--aero); }
+select[data-value="Electro"] { --attr: var(--electro); }
+select[data-value="Spectro"] { --attr: var(--spectro); }
+select[data-value="Havoc"]   { --attr: var(--havoc); }
 
-.el-select:not([data-value=""]) {
-  background-color: color-mix(in srgb, var(--el) 12%, #fff);
-  border-color: color-mix(in srgb, var(--el) 45%, #fff);
-  color: color-mix(in oklch, var(--el) 55%, #1a1c22); /* darker text so it reads on light bg */
+.attr-select:not([data-value=""]) {
+  background-color: color-mix(in srgb, var(--attr) 12%, #fff);
+  border-color: color-mix(in srgb, var(--attr) 45%, #fff);
+  color: color-mix(in oklch, var(--attr) 55%, #1a1c22); /* darker text so it reads on light bg */
   font-weight: 600;
 }
 

@@ -20,7 +20,7 @@ create table characters (
   name text not null default '',
   nickname text not null default '',
   notes text not null default '',
-  guesses jsonb not null default '[{"element":"","weapon":"","role":""},{"element":"","weapon":"","role":""}]',
+  guesses jsonb not null,
   created_at timestamptz not null default now()
 );
 

@@ -39,9 +39,9 @@ const ops = {
     return db.from('batches').delete().eq('id', id); // characters cascade
   },
 
-  async createCharacter({ id, batchId, image }) {
+  async createCharacter({ id, batchId, image, guesses }) {
     const img = await uploadImage(id, image);
-    const result = await db.from('characters').insert({ id, batch_id: batchId, ...img });
+    const result = await db.from('characters').insert({ id, batch_id: batchId, guesses, ...img });
     return { ...result, data: { image: img.image_url } };
   },
 
