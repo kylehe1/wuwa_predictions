@@ -28,8 +28,8 @@ const SYNC_INTERVAL = 3000;  // ms between checks for the other player's changes
 const TEXT_SAVE_DELAY = 600;  // ms to wait after typing stops before saving
 const MAX_IMAGE_SIZE = 800; // px, longest side
 
-const ATTRIBUTES = ['Glacio', 'Fusion', 'Electro', 'Aero', 'Spectro', 'Havoc'];
-const WEAPONS = ['Broadblade', 'Sword', 'Pistols', 'Gauntlets', 'Rectifier'];
+const ATTRIBUTES = ['Fusion', 'Glacio', 'Aero', 'Electro', 'Spectro', 'Havoc'];
+const WEAPONS = ['Sword', 'Broadblade', 'Pistols', 'Gauntlets', 'Rectifier'];
 const ROLES = ['Main DPS', 'Sub DPS', 'Support'];
 
 let state = { players: ['K', 'P'], activeBatchId: readLocal(ACTIVE_TAB_KEY), batches: [] };
