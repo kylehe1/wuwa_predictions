@@ -223,19 +223,24 @@ main {
   padding: 24px 32px 64px;
 }
 
+/* Looks like plain page text; only the underline shows it's editable */
 .batch-note {
   display: block;
   width: 100%;
   margin-bottom: 14px;
-  padding: 7px 10px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  font-size: 14px;
-  color: var(--text);
+  padding: 2px 0;
+  background: none;
+  border: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--heading);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
   outline: none;
 }
-.batch-note:focus { border-color: var(--accent); }
+.batch-note:focus { text-decoration-color: var(--accent); }
+.batch-note::placeholder { color: var(--faint); text-decoration: none; }
 
 .batch-bar {
   display: flex;
