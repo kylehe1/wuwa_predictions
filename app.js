@@ -263,7 +263,7 @@ function renderBatch() {
         <span class="add-icon"><span>+</span></span>
         <div>
           <span class="add-title">Add character</span>
-          <span class="add-hint">Click to upload, drag an image here, or paste</span>
+          <span class="add-hint">Click to upload or drag an image here</span>
         </div>
       </div>
     </div>`;
